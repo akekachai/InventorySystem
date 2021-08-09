@@ -1,0 +1,30 @@
+﻿@inject YcgItInventorySystem_V2.Services.MenuMasterService menus
+
+
+<nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+        @foreach (var G_menuNames in menus.GetGroupMenuMasters(@User.Identity.Name))
+        { 
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    
+                    <p>  @G_menuNames.ModuleName  <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                 @foreach (var menuNames in menus.GetMenuMasters(@User.Identity.Name).Where(n => n.AppModuleId == @G_menuNames.AppModuleId))
+                    {
+                    <li class="nav-item">
+                   
+                        <a class="nav-link" asp-area="" asp-controller=@menuNames.Controller asp-action=@menuNames.Action> <i class="far fa-circle nav-icon"></i><p>@menuNames.MenuName_TH</p>
+                        </a>
+                    </li>
+                        <li></li>
+                    }
+
+                </ul>
+            </li>
+        }
+    </ul>
+</nav>

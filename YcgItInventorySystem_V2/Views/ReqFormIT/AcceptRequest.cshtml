@@ -1,0 +1,96 @@
+﻿@model IEnumerable<YcgItInventorySystem_V2.Models.Inventory.SP_ReqFormItList>
+
+@{
+    ViewData["Title"] = "AcceptRequest";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>รับเรื่องการขอใช้บริการ</h4>
+
+<div class="alert alert-success alert-dismissible" id="NewMsg" style="display: none;">
+
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                เลขที่รายการ
+            </th>
+            <th>
+                ชื่อผู้ใช้บริการ
+            </th>
+            <th>
+                ฝ่าย/แผนก
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReqNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UsersName_TH)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DepartmentText)
+                </td>
+                <td>
+                    @{ if (item.ReqStatus == "1-2")
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.ReqNo" asp-route-pageid="2">ดูรายละเอียดขอใช้บริการ</a>
+                        }
+                    }
+                    @*<a asp-action="Details" asp-route-id="@item.ReqNo">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.ReqNo">Delete</a>*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script src="~/plugins/jquery/jquery.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        //var queryStringCollection = Request.Query;
+        //console.log(queryStringCollection);
+
+        //var queryString = HttpContext.Request.QueryString;
+        //console.log(queryString);
+        var ReqNo = "";
+        try
+        {
+
+            ReqNo =  "@Context.Request.Query["ReqNo"]"
+
+        }
+        catch { }
+
+
+        /*ReqNo = System.Web.HttpContext.Current.Request.QueryString["ReqNo"];*/
+        //
+
+        console.log(ReqNo);
+        if (ReqNo == "") {
+            $('#NewMsg').hide();
+        }
+        else {
+            var x = document.getElementById("NewMsg");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+
+            $('#NewMsg').html('<a href=# class=close data-dismiss=alert aria-label=close>&times;</a> รับเรื่องขอใช้บริการสำเร็จรายการเลขที่ : ' + ReqNo );
+        }
+
+
+    });
+</script> 

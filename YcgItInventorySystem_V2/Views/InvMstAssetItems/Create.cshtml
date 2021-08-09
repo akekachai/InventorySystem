@@ -1,0 +1,139 @@
+﻿@model YcgItInventorySystem_V2.Models.Inventory.InvMstAssetItem
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Select2 -->
+<link rel="stylesheet" href="~/plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="~/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
+
+<link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+<!-- DataTables -->
+<link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="~/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+<h3>สร้างข้อมูลทรัพทย์สิน</h3>
+
+<hr />
+
+<form asp-action="Create">
+    <div class="card card-primary card-outline">
+        <div class="card-body">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+
+                 
+                <div class="col-md-3">
+                    <label asp-for="ItemText" class="control-label"></label>
+                    <input asp-for="ItemText" class="form-control" >
+                    <span asp-validation-for="ItemText" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="ItemDescription" class="control-label"></label>
+                    <input asp-for="ItemDescription" class="form-control" >
+                    <span asp-validation-for="ItemDescription" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <label asp-for="TypeId" class="control-label"></label>
+                    <select asp-for="TypeId" class="form-control" asp-items="@(new SelectList(ViewBag.ListinvMstAssetType,"TypeId","TypeText"))"></select>
+                    <span asp-validation-for="TypeId" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="CatagoryId" class="control-label"></label>
+                    <select asp-for="CatagoryId" class="form-control" asp-items="@(new SelectList(ViewBag.ListinvMstAssetCatagory,"CatagoryId","CatagoryText"))"></select>
+                    <span asp-validation-for="CatagoryId" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="BrandId" class="control-label"></label>
+                    <select asp-for="BrandId" class="form-control" asp-items="@(new SelectList(ViewBag.ListinvMstAssetBrand ,"BrandId","BrandText"))"></select>
+                    <span asp-validation-for="BrandId" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="ModelId" class="control-label"></label>
+                    <select asp-for="ModelId" class="form-control" asp-items="@(new SelectList(ViewBag.ListinvMstAssetModel,"ModelId","ModelText"))"></select>
+                    <span asp-validation-for="ModelId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-3">
+                    <label asp-for="ItemExpireDateFlag" class="control-label"></label>
+                    <select asp-for="ItemExpireDateFlag" class="form-control">
+                        <option value="Y">Yes</option>
+                        <option value="N" selected>No</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="ItemContractFlag" class="control-label"></label>
+                    <select asp-for="ItemContractFlag" class="form-control">
+                        <option value="Y">Yes</option>
+                        <option value="N" selected>No</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="ItemUnlimitFlag" class="control-label"></label>
+                    <select asp-for="ItemUnlimitFlag" class="form-control">
+                        <option value="Y">Yes</option>
+                        <option value="N" selected>No</option>
+                    </select>
+
+                </div>
+
+                <div class="col-md-3">
+                    <label asp-for="ActiveFlag" class="control-label"></label>
+                    <select asp-for="ActiveFlag" class="form-control">
+                        <option value="Y" selected>Yes</option>
+                        <option value="N">No</option>
+                    </select>
+                </div>
+
+
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <input type="submit" value="Save" class="btn btn-primary" /> <a class="btn btn-info" asp-action="Index">Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
+}
+<!-- jQuery -->
+<script src="~/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Select2 -->
+<script src="~/plugins/select2/js/select2.full.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#ContractStartDate').datepicker({
+            format: 'dd/mm/yyyy',
+        });
+        $('#ContractExpireDate').datepicker({
+            format: 'dd/mm/yyyy',
+        });
+
+      
+    });
+</script>

@@ -1,0 +1,130 @@
+﻿@model IEnumerable<YcgItInventorySystem_V2.Models.Inventory.SP_ReqFormItList>
+
+@{
+    ViewData["Title"] = "AcceptRequest";
+     Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+ 
+<!-- DataTables -->
+<link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="~/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+<h4>รายการที่ดำเนินการ</h4>
+
+<div class="alert alert-success alert-dismissible" id="NewMsg" style="display: none;">
+
+</div>
+<table class="table table-bordered table-hover" id="myTable">
+    <thead>
+        <tr>
+            <th>
+                เลขที่รายการ
+            </th>
+            <th>
+                ชื่อผู้ใช้บริการ
+            </th>
+            <th>
+                ฝ่าย/แผนก
+            </th>
+            <th>
+                
+            </th>
+
+           
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReqNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UsersName_TH)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DepartmentText)
+                </td>
+                <td>
+                    @{ if (item.ReqStatus == "1-3")
+                        {
+                            <a asp-action="CreateEmpAsset" asp-route-id="@item.ReqNo" asp-route-pageid="0"> ดำเนินการ </a>
+                        }
+                        else if (item.ReqStatus != "1-3")
+                        { <a>ผ่าน</a>}
+                    }
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+<!-- jQuery -->
+<script src="~/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- DataTables  & Plugins -->
+<script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="~/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="~/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="~/plugins/jszip/jszip.min.js"></script>
+<script src="~/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="~/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="~/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="~/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="~/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+ 
+<script>
+    $(function () {
+        $("#myTable").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#myTable_wrapper .col-md-6:eq(0)');
+
+    });
+    $(document).ready(function () {
+        //var queryStringCollection = Request.Query;
+        //console.log(queryStringCollection);
+
+        //var queryString = HttpContext.Request.QueryString;
+        //console.log(queryString);
+         
+        var ReqNo = "";
+        try
+        {
+
+            ReqNo =  "@Context.Request.Query["ReqNo"]"
+
+        }
+        catch { }
+
+
+        /*ReqNo = System.Web.HttpContext.Current.Request.QueryString["ReqNo"];*/
+        //
+
+        console.log(ReqNo);
+        if (ReqNo == "") {
+            $('#NewMsg').hide();
+        }
+        else {
+            var x = document.getElementById("NewMsg");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+
+            $('#NewMsg').html('<a href=# class=close data-dismiss=alert aria-label=close>&times;</a>บันทึกการทำรายการเลขที่ : ' + ReqNo + ' สำเร็จ' );
+        }
+
+    });
+</script> 

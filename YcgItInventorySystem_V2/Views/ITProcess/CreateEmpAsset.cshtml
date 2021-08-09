@@ -1,0 +1,1088 @@
+﻿@model IEnumerable<YcgItInventorySystem_V2.Models.Inventory.SP_ReqFormIt_Id>
+
+@{
+    ViewData["Title"] = "CreateEmpAsset";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var usernameofuser = "";
+    var emailofuser = "";
+    var ReqNo = "";
+    var Control_No = "";
+
+}
+<!-- DataTables -->
+<link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="~/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="../../plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+<!-- Toastr -->
+<link rel="stylesheet" href="../../plugins/toastr/toastr.min.css">
+
+<style>
+    .buttonload {
+        background-color: #04AA6D; /* Green background */
+        border: none; /* Remove borders */
+        color: white; /* White text */
+        padding: 12px 24px; /* Some padding */
+        font-size: 16px; /* Set a font-size */
+    }
+</style>
+
+<div class="card card-secondary">
+    <div class="card-header">
+        <h3 class="card-title"> สำหรับหน่วยงานเทคโนโลยีสารสนเทศ (เพิ่มบันทึกการทำงาน และตรวจสอบ)</h3>
+    </div>
+
+    <div class="card card-primary card-tabs">
+        <div class="card-header p-0 pt-1">
+            <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="tabs-person-tab" data-toggle="pill" href="#tabs-person" role="tab" aria-controls="tabs-person" aria-selected="true"> ผู้ใช้งาน</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="tabs-access-tab" data-toggle="pill" href="#tabs-access" role="tab" aria-controls="tabs-access" aria-selected="false"> สิทธิการใช้งาน</a>
+                </li>
+
+            </ul>
+        </div>
+        <div class="tab-content" id="custom-tabs-one-tabContent" role="tablist">
+            <div class="tab-pane fade show active" id="tabs-person" role="tabpanel" aria-labelledby="tabs-person-tab">
+                @foreach (var item in Model)
+                {
+                    usernameofuser = item.UsersFirstName_EN + "." + item.UsersLastName_EN.Substring(0, 3);
+                    emailofuser = usernameofuser + "@deksomboon.com";
+                    ReqNo = item.ReqNo;
+                    Control_No = item.ControlNo;
+
+                    <div class="row">
+                        <div class="col-sm-3 text-left" style="margin-left:6px;"> รายการเลขที่ : <u>@Html.DisplayFor(modelItem => item.ReqNo) <input type="hidden" id="ReqNos" value=@item.ReqNo> </u> </div>
+                        <div class="col-sm-4 text-left">
+                            @{ if (item.UserStatus == "Up")
+                                { <input type="text" readonly class="btn btn-success btn-xs" value="เพิ่ม" style="width: 40px;" /> }
+                                else
+                                { <input type="text" readonly class="btn btn-danger btn-xs" value="ลด" style="width: 40px;" /> } }
+                            ผู้ใช้งาน ดังมีรายละเอียด ต่อไปนี้
+                        </div>
+                        <div class="col-sm-2"> </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6" style="margin-left:6px;"> ชื่อ-นามสกุล (ไทย) : <u>@Html.DisplayFor(modelItem => item.UsersName_TH) </u> </div>
+                        <div class="col-md-2"> รหัสพนักงาน : <u>@Html.DisplayFor(modelItem => item.UsersEmpCode) </u> </div> <input type="hidden" id="useremp" value=@item.UsersEmpCode />
+                        <div class="col-lg-3"> ตำแหน่ง : <small> <u>@Html.DisplayFor(modelItem => item.Positiontext) </u> </small> </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-7" style="margin-left:6px;"> ชื่อ-นามสกุล (อังกฤษ) : <u>@Html.DisplayFor(modelItem => item.UsersFirstName_EN) @Html.DisplayFor(modelItem => item.UsersLastName_EN) </u> </div> <input type="hidden" id="ofusername" value=@usernameofuser />
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12" style="margin-left:6px;"> บริษัท : <u>@Html.DisplayFor(modelItem => item.CompanyText) </u> </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-3" style="margin-left:6px;"> สาขา : <u>@Html.DisplayFor(modelItem => item.LocationText) </u> </div>
+                        <div class="col-md-7"> ฝ่าย/แผนก : <u>@Html.DisplayFor(modelItem => item.UserDepartmentText) - @Html.DisplayFor(modelItem => item.Usersectiontext) </u> </div>
+
+                    </div>
+
+                }
+            </div>
+
+            <div class="tab-pane fade" id="tabs-access" role="tabpanel" aria-labelledby="tabs-access-tab">
+                @* Start table*@
+                <div class="card-body">
+                    <div class="row">
+                        <div class="column col-6">
+                            <table class="table table-sm" id="myTBService1">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10%">
+                                            <small> เพิ่ม</small>
+                                        </th>
+                                        <th style="width: 10%">
+                                            <small> ลด</small>
+                                        </th>
+                                        <th style="width: 20%">
+                                            <small> รายการ</small>
+                                        </th>
+                                        <th style="width: 40%">
+                                            <small> การดำเเนินการ</small>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item2 in ViewBag.ListSP_ReqFormItDetailList)
+                                    {
+                                        if (item2.ServiceCode <= 9)
+                                        {
+
+                                            <tr height="10px;">
+                                                <td>
+                                                    <small>
+                                                        @{ if (item2.Actions == "1")
+                                                            {
+                                                                <input type="radio" value="@(item2.ServiceCode)" name=@item2.ServiceCode checked="true">
+
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="radio" value="@(item2.ServiceCode)" name=@item2.ServiceCode>
+                                                            }
+                                                        }
+                                                    </small>
+
+                                                </td>
+                                                <td>
+                                                    <small>
+                                                        @{ if (item2.Actions == "0")
+                                                            {
+                                                                <input type="radio" value="@(item2.ServiceCode)" name=@item2.ServiceCode checked="true">
+
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="radio" value="@(item2.ServiceCode)" name=@item2.ServiceCode>
+                                                            }
+                                                        }
+                                                    </small>
+                                                </td>
+                                                <td>
+                                                    <small> <input type="hidden" value="@(item2.ServiceCode)" style="width: 100%" /> <label type="" id="ServiceName" onclick="clearalladd(@(item2.ServiceCode));">@(item2.ServiceName) </label> </small>
+                                                </td>
+                                                <td>
+                                                    @{if (item2.Actions != null)
+                                                        {
+                                                            var assetsavedate = "assetsavedate" + item2.ServiceCode;
+                                                            var assetreciptdate = "assetreciptdate" + item2.ServiceCode;
+                                                            var checksuccess = "chksuccess" + item2.ServiceCode;
+                                                            if (item2.ServiceCode == 16)
+                                                            { <small> <input type="text" id="Remark" value="@(item2.Remarks)" placeholder="รายละเอียด" style="width: 100%" /> </small>
+                                                                <small> <input type="text" value="@(item2.IMEINo)" id="IMEI" placeholder="IMEI No." style="width: 100%" /> </small>
+                                                                <small> <input type="text" value="@(item2.AssetCode)" id="assetCode" placeholder="รหัสทรัพย์สิน" style="width: 100%" /> </small>
+                                                            }
+                                                            else if (item2.ServiceCode == 7)
+                                                            {
+                                                                <small> <input type="text" value="@(item2.Remarks)" id="Remark7" placeholder="รายละเอียด" style="width: 100%" /> </small>
+                                                                <small> <input type="text" value="@(item2.Enddate)" id="Enddate7" placeholder="ถึงวันที่" style="width: 100%" /> </small>
+                                                            }
+                                                            else
+                                                            {
+                                                                if (item2.HowToCheck == "detail")
+                                                                {
+
+                                                                    <small> <input type="text" value="@(item2.Remarks)" placeholder="รายละเอียด" style="width: 100%" /> </small>
+
+                                                                }
+                                                                else if (item2.HowToCheck == "username")
+                                                                {
+                                                                    <small> <input type="text" value="@(item2.Remarks)" placeholder="รายละเอียด" style="width: 100%" value=@usernameofuser /> </small>
+                                                                }
+                                                                else if (item2.HowToCheck == "email")
+                                                                {
+                                                                    <small> <input type="text" value="@(item2.Remarks)" placeholder="รายละเอียด" style="width: 100%" value=@emailofuser /> </small>
+                                                                }
+                                                            }
+
+                                                            if (item2.CatagoryId != "0")
+                                                            {
+                                                                var Dids = "D_assetcode_" + @item2.ServiceCode;
+
+                                                                <div id=@Dids>
+                                                                    @{if (item2.ITremark != null)
+                                                                        {
+                                                                            if (item2.ServiceCode == 4 || item2.ServiceCode == 5)
+                                                                            {
+                                                                                var mousecode = "mouse" + item2.ServiceCode;
+                                                                                var version = "version" + item2.ServiceCode;
+                                                                                var serialno = "seriano" + item2.ServiceCode;
+                                                                                var asset = "assetcode" + item2.ServiceCode;
+                                                                                <small> รุ่น : @item2.ITremark </small> <br /> <small> Serial No. : @item2.ItemSerialNo </small>
+                                                                                <br /> <small> รหัสทรัพย์สิน : @item2.AssetCode </small> <br /> <small> <input id=@mousecode type=text placeholder="mouse" value=@item2.mouse /> </small>
+                                                                                <input type=hidden id=@version value=@item2.ITremark />
+                                                                                <input type=hidden id=@serialno value=@item2.ItemSerialNo />
+                                                                                <input type=hidden id=@asset value=@item2.ItemAssetNo />
+
+                                                                            }
+
+                                                                        }
+
+                                                                    }
+                                                                </div>
+                                                                if (item2.ServiceCode == 4 || item2.ServiceCode == 5 || item2.ServiceCode == 6 || item2.ServiceCode == 9)
+                                                                {
+                                                                    if (item2.ServiceCode == 4 || item2.ServiceCode == 5)
+                                                                    {
+                                                                        <button type="button" class="btn btn-primary btn-xs" data-assigned-id="@item2.CatagoryId" data-toggle="modal" data-target="#AssetsModal" onclick="searchasset(this,@item2.ServiceCode);"> <i class="fa fa-search"> </i> </button>
+                                                                        var Rids = "R_ItemSerialNo_" + @item2.ServiceCode;
+                                                                        <input type="hidden" id=@Rids />
+                                                                    }
+
+                                                                    <input type="text" class="btn btn-primary btn-xs col-lg-5" id=@assetsavedate placeholder="วันที่บันทึก" value=@item2.ItemActualDate onchange="chkallList();"> <input type="text" class="btn btn-success btn-xs col-lg-5" placeholder="วันที่รับ" id=@assetreciptdate value=@item2.ItemReceiveDate onchange="chkallList();">
+                                                                }
+
+                                                            }
+                                                            if (item2.HowToCheck != "check")
+                                                            {
+                                                                @*<input type="text" class="btn btn-primary btn-xs col-lg-4" id=@assetsavedate value="วันที่บันทึก" onchange="chkallList();"> <input type="text" class="btn btn-success btn-xs col-lg-4" value="วันที่รับ" id=@assetreciptdate onchange="chkallList();">*@
+
+                                                            }
+                                                            if (item2.CheckListByIT == true)
+                                                            {
+                                                                <br /> <input type="checkbox" data-assigned-id="@item2.ServiceCode" id=@checksuccess onclick="myFunction(this);" checked /> <small> สำเร็จ</small>
+                                                            }
+                                                            else
+                                                            {
+                                                                <br /> <input type="checkbox" data-assigned-id="@item2.ServiceCode" id=@checksuccess onclick="myFunction(this);" /> <small> สำเร็จ</small>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            if (item2.HowToCheck == "detail" || item2.HowToCheck == "username" || item2.HowToCheck == "email")
+                                                            {
+
+                                                                <small> <input type="text" value="@(item2.Remarks)" placeholder="รายละเอียด" style="width: 100%" /> </small>
+
+                                                            }
+                                                        }
+                                                    }
+                                                </td>
+
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="column col-6">
+
+                            <table class="table table-sm" id="myTBService2">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10%">
+                                            <small> เพิ่ม</small>
+                                        </th>
+                                        <th style="width: 10%">
+                                            <small> ลด</small>
+                                        </th>
+                                        <th style="width: 20%">
+                                            <small> รายการ</small>
+                                        </th>
+                                        <th style="width: 40%">
+                                            <small> การดำเนินการ</small>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item2 in ViewBag.ListSP_ReqFormItDetailList)
+                                    {
+                                        if (item2.ServiceCode >= 10)
+                                        {
+                                            <tr height="10px;">
+                                                <td>
+                                                    <small>
+                                                        @{ if (item2.Actions == "1")
+                                                            {
+                                                                <input type="radio" value="@(item2.ServiceCode)" name=@item2.ServiceCode checked="true">
+
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="radio" value="@(item2.ServiceCode)" name=@item2.ServiceCode>
+                                                            }
+                                                        }
+                                                    </small>
+
+                                                </td>
+                                                <td>
+                                                    <small>
+                                                        @{ if (item2.Actions == "0")
+                                                            {
+                                                                <input type="radio" value="@(item2.ServiceCode)" name=@item2.ServiceCode checked="true">
+
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="radio" value="@(item2.ServiceCode)" name=@item2.ServiceCode>
+                                                            }
+                                                        }
+                                                    </small>
+                                                </td>
+                                                <td>
+                                                    <small> <input type="hidden" value="@(item2.ServiceCode)" style="width: 100%" /> <label type="" id="ServiceName" onclick="clearalladd(@(item2.ServiceCode));">@(item2.ServiceName) </label> </small>
+                                                </td>
+                                                <td>
+                                                    @{if (item2.Actions != null)
+                                                        {
+                                                            var assetsavedate = "assetsavedate" + item2.ServiceCode;
+                                                            var assetreciptdate = "assetreciptdate" + item2.ServiceCode;
+                                                            var checksuccess = "chksuccess" + item2.ServiceCode;
+                                                            if (item2.ServiceCode == 16)
+                                                            {
+                                                                <small> <input type="text" id="Remark" value="@(item2.Remarks)" placeholder="รายละเอียด" style="width: 100%" /> </small>
+                                                                <small> <input type="text" value="@(item2.IMEINo)" id="IMEI" placeholder="IMEI No." style="width: 100%" /> </small>
+                                                                <small> <input type="text" value="@(item2.AssetCode)" id="assetCode" placeholder="รหัสทรัพย์สิน" style="width: 100%" /> </small>
+
+
+                                                            }
+                                                            else if (item2.ServiceCode == 17)
+                                                            {
+                                                                <small> <input type="text" value="@(item2.Remarks)" id="Remark17" placeholder="รายละเอียด" style="width: 100%" /> </small>
+                                                                <small> <input type="text" value="@(item2.Enddate)" id="Enddate17" placeholder="ถึงวันที่" style="width: 100%" /> </small>
+                                                            }
+                                                            else
+                                                            {
+                                                                if (item2.HowToCheck == "detail")
+                                                                {
+                                                                    <small> <input type="text" value="@(item2.Remarks)" placeholder="รายละเอียด" style="width: 100%" /> </small>
+
+                                                                }
+                                                                else if (item2.HowToCheck == "username")
+                                                                {
+                                                                    <small> <input type="text" value="@(item2.Remarks)" placeholder="รายละเอียด" style="width: 100%" value=@usernameofuser /> </small>
+                                                                }
+                                                                else if (item2.HowToCheck == "emali")
+                                                                {
+                                                                    <small> <input type="text" value="@(item2.Remarks)" placeholder="รายละเอียด" style="width: 100%" value=@emailofuser /> </small>
+                                                                }
+                                                            }
+
+                                                            if (item2.CatagoryId != "0")
+                                                            {
+
+                                                                var Dids = "D_assetcode_" + @item2.ServiceCode;
+                                                                <div id=@Dids>
+                                                                    @{if (item2.ITremark != null)
+                                                                        {
+                                                                            if (item2.ServiceCode == 16)
+                                                                            {
+
+                                                                                var version = "version" + item2.ServiceCode;
+                                                                                var serialno = "seriano" + item2.ServiceCode;
+                                                                                var asset = "assetcode" + item2.ServiceCode;
+                                                                                <small> รุ่น : @item2.ITremark </small> <br />
+                                                                                <small> Serial No. : @item2.ItemSerialNo </small>
+                                                                                <br /> <small> รหัสทรัพย์สิน : @item2.AssetCode </small> <br />
+                                                                                <input type=hidden id=@version value=@item2.ITremark />
+                                                                                <input type=hidden id=@serialno value=@item2.ItemSerialNo />
+                                                                                <input type=hidden id=@asset value=@item2.ItemAssetNo />
+
+                                                                            }
+
+                                                                        }
+
+                                                                    }
+                                                                </div>
+                                                                if (item2.ServiceCode == 10 || item2.ServiceCode == 11 || item2.ServiceCode == 12 || item2.ServiceCode == 13 || item2.ServiceCode == 16)
+                                                                {
+                                                                    if (item2.ServiceCode == 16)
+                                                                    { <button type="button" class="btn btn-primary btn-xs" data-assigned-id="@item2.CatagoryId" data-toggle="modal" data-target="#AssetsModal" onclick="searchasset(this,@item2.ServiceCode);"> <i class="fa fa-search"> </i> </button>
+                                                                        var Rids = "R_ItemSerialNo_" + @item2.ServiceCode;
+                                                                        <input type="hidden" id=@Rids />
+                                                                    }
+
+                                                                    <input type="text" class="btn btn-primary btn-xs col-lg-5" id=@assetsavedate placeholder="วันที่บันทึก" value=@item2.ItemActualDate onchange="chkallList();"> <input type="text" class="btn btn-success btn-xs col-lg-5" placeholder="วันที่รับ" id=@assetreciptdate value=@item2.ItemReceiveDate onchange="chkallList();">
+                                                                }
+                                                            }
+                                                            if (item2.HowToCheck != "check")
+                                                            {
+                                                                @*<input type="text" class="btn btn-primary btn-xs col-lg-4" id=@assetsavedate value="วันที่บันทึก" onchange="chkallList();"> <input type="text" class="btn btn-success btn-xs col-lg-4" value="วันที่รับ" id=@assetreciptdate onchange="chkallList();">*@
+
+                                                            }
+                                                            if (item2.CheckListByIT == true)
+                                                            {
+                                                                <input type="checkbox" data-assigned-id="@item2.ServiceCode" id=@checksuccess onclick="myFunction(this);" checked /> <small> สำเร็จ</small>
+                                                            }
+                                                            else
+                                                            {
+                                                                <br /> <input type="checkbox" data-assigned-id="@item2.ServiceCode" id=@checksuccess onclick="myFunction(this);" /> <small> สำเร็จ</small>
+                                                            }
+
+
+                                                        }
+                                                        else
+                                                        {
+                                                            if (item2.HowToCheck == "detail" || item2.HowToCheck == "username" || item2.HowToCheck == "email")
+                                                            {
+
+                                                                <small> <input type="text" value="@(item2.Remarks)" placeholder="รายละเอียด" style="width: 100%" /> </small>
+
+                                                            }
+                                                        }
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                @*//end table*@
+                <hr />
+                <div class="row">
+
+                    <div class="col-lg-6" style="margin-left:6px;">
+                        <small> วันที่บันทึก<input type="text" id="SaveDate_Temp" class="btn btn-primary btn-xs" onchange="alllist();" style="width: 25%"> </small>
+                        <small> วันที่รับ<input type="text" id="ReciptDate_Temp" class="btn btn-success btn-xs" onchange="alllist();" style="width: 25%"> <input type="checkbox" id="chkalldate" onclick="alllist();" /> ทุกรายการ</small>
+                        <br>
+                        <div class="col-md-12">
+                            @{ if (Control_No != null)
+                                {
+                                    <br /> <input type="checkbox" id="NoControl" onclick="GetCtrlNo();" checked disabled style="display:none" /> <small style="display:none"> สร้างเลขที่คุ้มทรัพย์สิน</small> <input id="sh_controlno" class="btn btn-success btn-xs" type="text" value=@Control_No placeholder="เลขที่คุ้มทรัพย์สิน" style="display:none" /><br />
+                                }
+                                else
+                                {
+                                    <br /> <input type="checkbox" id="NoControl" onclick="GetCtrlNo();" /> <small> สร้างเลขที่คุ้มทรัพย์สิน</small> <input id="sh_controlno" class="btn btn-success btn-xs" type="text" placeholder="เลขที่คุ้มทรัพย์สิน" /><br />
+                                }
+                            }
+                        </div>
+                        <input type="checkbox" id="CloseReq"  /> <small>ปิดรายการ</small>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <small>
+                                หมายเหตุ(comment) <input type="radio" name="statusemp" value="0" checked onclick="notecomment(0);" /> <small> พนักงานปัจจุบัน</small> <input type="radio" name="statusemp" value="1" onclick="notecomment(1);" /> <small> พนักงานใหม่</small> <input type="radio" name="statusemp" value="2" onclick="notecomment(2);" /> <small> ลาออก</small>
+                                <input type="text" id="Comment" class="form-control text-sm">
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+
+        <input asp-action="CreateEmpAsset" asp-controller="ITProcess" type="button" value="บันทึกผู้ดำเนินการ" class="btn btn-primary btn-block" id="btnSave" onclick="saveitprocess();" />
+        <a target="_blank" asp-action="PrintReqForm" asp-controller="ITProcess" asp-route-ReqNo=@ReqNo class="btn btn-danger btn-block btn-xs"> พิมพ์แบบคำขอ</a>
+
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="AssetsModal" tabindex="-1" role="dialog" aria-labelledby="AssetsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="AssetsModalLabel"> ค้นหาทรัพย์สิน</h5> <input type="hidden" id="Mservice_code">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"> &times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-hover" id="myTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                <small> ชื่ออุปกรณ์</small>
+                            </th>
+                            <th>
+                                <small> SerialNo</small>
+                            </th>
+                            <th>
+                                <small> รหัสทรัพย์สิน</small>
+                            </th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" id="closem" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index"> Back to List</a>
+</div>
+<!-- jQuery -->
+<script src="~/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables & Plugins -->
+<script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="~/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="~/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="~/plugins/jszip/jszip.min.js"></script>
+<script src="~/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="~/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="~/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="~/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="~/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- AdminLTE App -->
+<script src="~/dist/js/adminlte.min.js"></script>
+
+<!-- SweetAlert2 -->
+<script src="../../plugins/sweetalert2/sweetalert2.min.js"></script>
+<!-- Toastr -->
+<script src="../../plugins/toastr/toastr.min.js"></script>
+
+<!-- AdminLTE for demo purposes -->
+<script>
+    function notecomment(estatus) {
+        if (estatus == 0) {
+            $("#Comment").val("-");
+                }
+        else if (estatus == 1) {
+            $("#Comment").val("พนักงานใหม่ ");
+        }
+        else if (estatus == 2) {
+            $("#Comment").val("พนักงานลาออก ");
+        }
+    }
+
+    function GetCtrlNo()
+    {
+
+        var chkctrl = document.getElementById('NoControl');
+        if (chkctrl.checked == true) {
+          $.ajax({
+                    type: "Get",
+                    url: '@Url.Action("GetCtrlNo", "ITProcess")',
+                    success: function(Data)
+                        {
+                        $("#sh_controlno").val(Data);
+
+                    }
+                   });
+        } else
+        {
+
+            $("#sh_controlno").val('')
+        }
+
+    }
+
+    function saveitprocess() {
+        var id = $("#ReqNos").val();
+        var controlNo = document.getElementById("NoControl");
+
+        //console.log(controlNo.checked);
+        //  document.getElementById("loader1").style.visibility = "visible";
+        var empstatus = document.getElementsByName("statusemp");
+        console.log(empstatus);
+        //var empstatus_val;,
+        for (var i = 0; i < empstatus.length ; i++) {
+        //    console.log(i);
+        //    console.log(empstatus[i].values);
+          if (empstatus[i].checked)
+       { // If checked?
+        //        empstatus_val = empstatus[i].value;
+              empstatus_val = i;
+               console.log(i);
+        //        return empstatus[i].value; // Returns the selected value.
+          }
+        }
+        console.log('chk : ' + empstatus_val);
+
+        var chkCloseReq = document.getElementById("CloseReq").checked ;
+
+           $.ajax({
+            type: "Post",
+            url: '@Url.Action("CreateEmpAsset", "ITProcess")',
+               data: { ReqNo: id, controlNo: $("#sh_controlno").val(), _empStatus: empstatus_val, statusClose: chkCloseReq},
+            success: function(Data)
+            {
+                console.log(Data);
+           //     document.getElementById("loader1").style.visibility = "hidden";
+            }
+           });
+
+        var CtrlNo = $("#NoControl").val()
+        console.log("CtrlNo : " + CtrlNo);
+
+        var oTable = document.getElementById("myTBService1");
+        /*    var events = [{ "ServiceCode":"","ActionStatus":0,"Remark": "-"}];*/
+        var datasrv = [], newItem, i = 0;
+        var dataAseets = [], newItem, i = 0;
+        $("input:checked", oTable).each(function () {
+            var tdColumn = $(this).closest("td");
+            rowId = $(this).val();
+            columnIndex = tdColumn.index();
+            // console.log(columnIndex);
+            // console.log(rowId)
+            // events[rowid].ActionStatus = columnIndex;
+            if (columnIndex < 3) {
+                datasrv.push({ "ReqNo": $("#ReqNos").val(), "ServiceCode": rowId, "Actions": columnIndex, "ActionsUp": columnIndex, "Remarks": "-", "IMEINo": "-", "AssetCode": "-", "Brand": "-", "ItemAssetNo": "-", "ItemSerialNo": "-", "TelNumber": "-", "CheckListByIT": "-", "CheckListByITDate": "", "Mouse": "-", "EndDate": "-" });
+                dataAseets.push({ "itemid": "-","userEmp" : "-", "servicecode": rowId, "SaveDates": "-", "ReceiptDate": "-"});
+            }
+        });
+
+
+        var oTable2 = document.getElementById("myTBService2");
+
+
+        $("input:checked", oTable2).each(function () {
+            var tdColumn = $(this).closest("td");
+            rowId = $(this).val();
+            columnIndex = tdColumn.index();
+            if (columnIndex < 3) {
+                datasrv.push({ "ReqNo": $("#ReqNos").val(), "ServiceCode": rowId, "Actions": columnIndex, "ActionsUp": columnIndex, "Remarks": "-", "IMEINo": "-", "AssetCode": "-", "Brand": "-", "ItemAssetNo": "-", "ItemSerialNo": "-", "TelNumber": "-", "CheckListByIT": "-", "CheckListByITDate": "", "Mouse": "-", "EndDate": "-" });
+                dataAseets.push({ "itemid": "-", "userEmp": "-",  "servicecode": rowId, "SaveDates": "-", "ReceiptDate": "-" });
+            }
+        });
+
+        console.log(datasrv);
+        console.log(dataAseets);
+
+        var datalength = datasrv.length;
+
+        for (i = 0; i < datalength; i++) {
+
+            var srv_row = datasrv[i].ServiceCode;
+            console.log(srv_row)
+
+            var x1 = "";
+            if (srv_row > 9)
+            {
+                x1 = document.getElementById("myTBService2").rows[srv_row - 9].cells[3].getElementsByTagName('input')[0].value;
+            }
+            else
+            {
+                if (srv_row > 3)
+                {
+                    x1 = document.getElementById("myTBService1").rows[srv_row].cells[3].getElementsByTagName('input')[0].value;
+                }
+
+            }
+
+
+            if (i <= datalength)
+            {
+                if (datasrv[i].ServiceCode == "16")
+                {
+                    datasrv[i].Remarks = document.getElementById('Remark').value;
+                    datasrv[i].IMEINo = document.getElementById('IMEI').value;
+                    datasrv[i].AssetCode = document.getElementById('assetCode').value;
+
+                    var assettxt = "D_assetcode_" + datasrv[i].ServiceCode;
+                    str = document.getElementById(assettxt).innerHTML;
+
+                    if (str.trim() != '')
+                    {
+
+                        var version = "version" + datasrv[i].ServiceCode;
+                        var serialno = "seriano" + datasrv[i].ServiceCode;
+                        var asset = "assetcode" + datasrv[i].ServiceCode;
+
+                        var saveDate = "assetsavedate" + datasrv[i].ServiceCode;
+                        var receiptdate = "assetreciptdate" + datasrv[i].ServiceCode;
+
+
+                        datasrv[i].Brand = document.getElementById(version).value;
+                        datasrv[i].ItemAssetNo = document.getElementById(asset).value;
+                        datasrv[i].ItemSerialNo = document.getElementById(serialno).value;
+
+
+                        dataAseets[i].userEmp = $("#useremp").val();
+                        dataAseets[i].SaveDates = document.getElementById(saveDate).value;
+                        dataAseets[i].ReceiptDate = document.getElementById(receiptdate).value;
+                    }
+                } else if (parseInt(datasrv[i].ServiceCode) == 6 || parseInt(datasrv[i].ServiceCode) == 9 || parseInt(datasrv[i].ServiceCode) == 10 || parseInt(datasrv[i].ServiceCode) == 11 || parseInt(datasrv[i].ServiceCode) == 12 || parseInt(datasrv[i].ServiceCode)  == 13)
+                {
+                    console.log('Asset : ' +  datasrv[i].ServiceCode);
+                    datasrv[i].Remarks = x1;
+                    var saveDate = "assetsavedate" + datasrv[i].ServiceCode;
+                    var receiptdate = "assetreciptdate" + datasrv[i].ServiceCode;
+                    dataAseets[i].userEmp = $("#useremp").val();
+                    dataAseets[i].SaveDates = document.getElementById(saveDate).value;
+                    dataAseets[i].ReceiptDate = document.getElementById(receiptdate).value;
+
+                }
+                else
+                {
+                    if (parseInt(datasrv[i].ServiceCode) < 6 || parseInt(datasrv[i].ServiceCode) == 7 ) {
+                        datasrv[i].Remarks = x1;
+                        if (datasrv[i].ServiceCode == "7") {
+                            datasrv[i].Remarks = document.getElementById('Remark').value;
+                        } else if (datasrv[i].ServiceCode == "4" || datasrv[i].ServiceCode == "5") {//D_assetcode_9
+                            var assettxt = "D_assetcode_" + datasrv[i].ServiceCode;
+                            str = document.getElementById(assettxt).innerHTML;
+
+                            if (str.trim() != '') {
+                                var mouse = "mouse" + datasrv[i].ServiceCode;
+                                var version = "version" + datasrv[i].ServiceCode;
+                                var serialno = "seriano" + datasrv[i].ServiceCode;
+                                var asset = "assetcode" + datasrv[i].ServiceCode;
+
+                                var saveDate = "assetsavedate" + datasrv[i].ServiceCode;
+                                var receiptdate = "assetreciptdate" + datasrv[i].ServiceCode;
+
+
+                                datasrv[i].Mouse = document.getElementById(mouse).value;
+
+
+                                datasrv[i].Brand = document.getElementById(version).value;
+                                datasrv[i].ItemAssetNo = document.getElementById(asset).value;
+                                datasrv[i].ItemSerialNo = document.getElementById(serialno).value;
+
+
+                                dataAseets[i].userEmp = $("#useremp").val();
+                                dataAseets[i].SaveDates = document.getElementById(saveDate).value;
+                                dataAseets[i].ReceiptDate = document.getElementById(receiptdate).value;
+                            }
+
+                        }
+
+                        //var assettxt = "D_assetcode_" + datasrv[i].ServiceCode;
+                        //var scode = datasrv[i].ServiceCode;
+                        //if (scode != "1" && scode != "2" && scode != "3" && scode != "7" && scode != "8")
+                        //{
+                        //    str = document.getElementById(assettxt).innerHTML;
+                        //    if ( str != '')
+                        //    {
+
+                        //        var serialno = "seriano" + datasrv[i].ServiceCode;
+                        //        var serial_value = document.getElementById(serialno).value;
+                        //        if (serial_value != "") {
+                        //            datasrv[i].ItemSerialNo = serial_value;
+                        //        }
+                        //    } else {
+                        //        datasrv[i].ItemSerialNo = x1;
+                        //    }
+                        //}
+
+                    }
+                    else
+                    {
+                        datasrv[i].Remarks = x1;
+                        if (datasrv[i].ServiceCode == "17") {
+
+                            datasrv[i].Remarks = document.getElementById('Remark').value;
+
+                        }
+
+                      //  var assettxt = "D_assetcode_" + datasrv[i].ServiceCode;
+
+                        //var scode = datasrv[i].ServiceCode;
+                        //if (scode != "15" && scode != "17" && scode != "18") {
+                        //    str = document.getElementById(assettxt).innerHTML
+                        //if ( str != '')
+                        //{
+
+                        //    var serialno = "seriano" + datasrv[i].ServiceCode;
+                        //    var serial_value = document.getElementById(serialno).value;
+                        //    if (serial_value != "") {
+                        //        datasrv[i].ItemSerialNo = serial_value;
+                        //    }
+                        //} else {
+                        //    datasrv[i].ItemSerialNo = x1;
+                        //    }
+                        //}
+                    }
+
+                }
+
+                //var Serial = "#R_ItemSerialNo_" + datasrv[i].ServiceCode;
+                //datasrv[i].ItemSerialNo = $(Serial).val();
+
+                var chksuccess = "chksuccess" + datasrv[i].ServiceCode;
+                var chkstatus = document.getElementById(chksuccess);
+
+                datasrv[i].CheckListByIT = chkstatus.checked;
+
+               console.log('Code :' + datasrv[i].ServiceCode + ' | status : ' + chkstatus.checked);
+            }
+
+        }
+
+        for (i = 0; i < dataAseets.length; i++) {
+
+            if (dataAseets[i].userEmp != "-" && (dataAseets[i].SaveDates == "" || dataAseets[i].ReceiptDate == "" ))
+            {
+                alert('ไม่ได้ใส่ข้อมูลวันที่บันทึกหรือวันที่รับของ');
+               // document.getElementById("loader1").style.visibility = "hidden";
+                return false
+            }
+        }
+
+          $.ajax({
+            type: "Post",
+            url: '@Url.Action("CreateEmpAssetDetail", "ITProcess")',
+              data: { reqFormItdetail: datasrv, ControlNo: $("#sh_controlno").val(), empItemasset: dataAseets },
+            success: function(Data)
+            {
+                console.log(Data);
+              //  document.getElementById("loader1").style.visibility = "hidden";
+
+
+                var Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+
+                Toast.fire({
+                    icon: 'success',
+                    title: 'บันทึกรายการ เลขที่เอกสาร ' + id + ' สำเร็จ'
+                });
+            }
+            });
+    }
+
+
+    function clearalladd(srvc) {
+
+        var ele = document.getElementsByName(srvc);
+        console.log(ele.length);
+        for (var i = 0; i < ele.length; i++)
+            ele[i].checked = false;
+        console.log(i);
+
+    }
+
+    function myFunction(serviceCode) {
+
+        var id = $(serviceCode).data('assigned-id');
+
+        //var text = document.getElementById("text");
+        if (serviceCode.checked == true) {
+            // alert("ok t " + id);
+        } else {
+            //  alert("ok f " + id);
+        }
+
+    }
+    function sendval(itemid,assetcode,itemSerialNo,servicecode) {
+
+        var returnid = "#D_assetcode_" + servicecode;
+        var SaveSerialNo = "#R_ItemSerialNo_" + servicecode;
+        $(SaveSerialNo).val(itemSerialNo);
+        var itemText = "No";
+        $.ajax({
+            type: "Get",
+            url: '@Url.Action("GetitemText", "ITProcess")',
+            data: { itemid: itemid },
+            success: function(Data)
+            {
+                if (servicecode == '4' || servicecode == '5')
+                {
+                    var mousecode = "mouse" + servicecode;
+                    var version = "version" + servicecode;
+                    var serialno = "seriano" + servicecode;
+                    var asset  = "assetcode" + servicecode;
+                    $(returnid).html('<small  >รุ่น : ' + Data +
+                        ' </small><br/><small>Serial No. : ' + itemSerialNo +
+                        ' </small><br/><small>รหัสทรัพย์สิน : ' + assetcode +
+                        ' </small><br/> <small><input id=' + mousecode + ' type=text placeholder="mouse" /></small>'+
+                       ' <input type=hidden id=' + version + ' value=' + Data + ' />' +
+                        ' <input type=hidden id=' + serialno + ' value=' + itemSerialNo + ' />' +
+                        ' <input type=hidden id=' + asset + ' value=' + assetcode + ' />' )
+
+
+                }
+                else
+                {
+                    var version = "version" + servicecode;
+                    var serialno = "seriano" + servicecode;
+                    var asset = "assetcode" + servicecode;
+
+                    $(returnid).html('<small>รุ่น : ' + Data +
+                        ' </small><br/><small>Serial No. : ' + itemSerialNo +
+                        ' </small><br/><small>รหัสทรัพย์สิน : ' + assetcode + ' </small>' +
+                        ' <input type=hidden id=' + version + ' value=' + Data + ' />' +
+                        ' <input type=hidden id=' + serialno + ' value=' + itemSerialNo + ' />' +
+                        ' <input type=hidden id=' + asset + ' value=' + assetcode + ' />')
+                 }
+
+
+            }
+        });
+            console.log(itemText);
+
+           $("#AssetsModal").modal('hide');
+        $("#closem").click();
+    }
+
+
+    function searchasset(catagoryId,servicecode) {
+
+
+        var id = $(catagoryId).data('assigned-id');
+        $("#Mservice_code").val(0);
+        $("#Mservice_code").val(servicecode);
+
+        $(function () {
+        $.ajax({
+            type: "Get",
+            url: '@Url.Action("GetAssetRemain", "ITProcess")',
+            data: { category: id },
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: OnSuccess,
+            failure: function (response) {
+
+            },
+            error: function (response) {
+
+            }
+        });
+    });
+
+    }
+
+    function OnSuccess(response)
+    {
+        var Info = eval(response);
+        console.log(Info);
+        if ($.fn.dataTable.isDataTable('#myTable')) {
+            table = $('#myTable').DataTable();
+            table.clear().draw();
+            table.rows.add(Info);
+            table.columns.adjust().draw();
+        }
+        else
+        {
+            $("#myTable").DataTable(
+                {
+                    "responsive": true, "lengthChange": false, "autoWidth": false, paging: false, bInfo: false,
+                    bLengthChange: true,
+                    lengthMenu: [[5, 10, -1], [5, 10, "All"]],
+                    bFilter: true,
+                    bSort: true,
+                    bPaginate: true,
+                    data: Info,
+                    'columnDefs': [
+                        {
+                            "targets": 0, // your case first column
+
+                            "width": "30%",
+                        },
+                        {
+                            "targets": 3,
+                            "className": "text-center",
+                        }],
+                    columns:
+                        [{
+                            "data": "itemtext",
+                            "render": function (data)
+                            {
+                                var result = "<small>" + data +"</small>"
+                                return result
+                            }
+                        },
+
+                            {
+                                'data': 'itemSerialNo',
+                                "render": function (data) {
+                                    var result = "<small>" + data + "</small>"
+                                    return result
+                                } },
+                            {
+                                'data': 'itemAssetNo',
+                                "render": function (data) {
+                                    var result = "<small>" + data  +"</small>"
+                                    return result
+                                }},
+                        {
+                            "data": "itemAssetNo",
+                            "render": function (data,type, full)
+                            {
+                                var result = "<a href='#' class='btn btn-info' onclick = sendval("+ full.itemId  +",'" + data + "','" + full.itemSerialNo + "','" + $("#Mservice_code").val() + "'); >เลือก</a>"
+                                return result }
+                            }
+                        ]
+                });
+
+        }
+    }
+
+    $(document).ready(function () {
+        $('#SaveDate_Temp').datepicker({
+            format: 'dd/mm/yyyy',
+        });
+
+        $('#ReciptDate_Temp').datepicker({
+            format: 'dd/mm/yyyy',
+        });
+        $('#calSave').datepicker({
+            format: 'dd/mm/yyyy',
+        });
+     //   document.getElementById("loader1").style.visibility = "hidden";
+        oTable = document.getElementById("myTBService1");
+        for (i = 1; i < oTable.rows.length; i++) {
+            var assetsavedate = "#assetsavedate" + i;
+            var assetreciptdate = "#assetreciptdate" + i;
+            $(assetsavedate).datepicker({
+                format: 'dd/mm/yyyy',
+            });
+            $(assetreciptdate).datepicker({
+                format: 'dd/mm/yyyy',
+            });
+        }
+        oTable2 = document.getElementById("myTBService2");
+        for (i = 1; i < oTable2.rows.length; i++) {
+            var scode = document.getElementById("myTBService2").rows[i].cells[2].getElementsByTagName('input')[0].value;
+            console.log(scode);
+            var assetsavedate = "#assetsavedate" + scode;
+            var assetreciptdate = "#assetreciptdate" + scode;
+            $(assetsavedate).datepicker({
+                format: 'dd/mm/yyyy',
+            });
+            $(assetreciptdate).datepicker({
+                format: 'dd/mm/yyyy',
+            });
+        }
+    });
+
+    function alllist()
+    {
+       /* document.getElementById("chkalldate").checked*/
+        if (document.getElementById("chkalldate").checked == true)
+        {
+            console.log("true");
+            oTable =  document.getElementById("myTBService1");
+            for (i = 1; i < oTable.rows.length; i++)
+            {
+                var assetsavedate = "#assetsavedate" + i;
+                var assetreciptdate = "#assetreciptdate" + i;
+
+                //var _assetsavedate = "assetsavedate" + i;
+                //var _assetreciptdate = "assetreciptdate" + i;
+
+
+                $(assetsavedate).val($("#SaveDate_Temp").val())
+                $(assetreciptdate).val($("#ReciptDate_Temp").val())
+            }
+             oTable2 = document.getElementById("myTBService2");
+            for (i = 1; i < oTable2.rows.length; i++)
+            {
+                var scode = document.getElementById("myTBService2").rows[i].cells[2].getElementsByTagName('input')[0].value;
+                console.log(scode);
+                var assetsavedate = "#assetsavedate" + scode;
+                var assetreciptdate = "#assetreciptdate" + scode;
+
+                      //var _assetsavedate = "assetsavedate" + i;
+                      //var _assetreciptdate = "assetreciptdate" + i;
+
+
+                      $(assetsavedate).val($("#SaveDate_Temp").val())
+                      $(assetreciptdate).val($("#ReciptDate_Temp").val())
+            }
+        }
+
+
+    }
+
+        function chkallList() { document.getElementById("chkalldate").checked = false; }
+
+</script>
+
+
+
+@section Scripts {
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
+
+}

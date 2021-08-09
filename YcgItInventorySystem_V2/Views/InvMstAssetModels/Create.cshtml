@@ -1,0 +1,51 @@
+﻿@model YcgItInventorySystem_V2.Models.Inventory.InvMstAssetModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>สร้างข้อมูลรุ่น</h3>
+ 
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ModelId" class="control-label"></label>
+                <input asp-for="ModelId" class="form-control" />
+                <span asp-validation-for="ModelId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ModelText" class="control-label"></label>
+                <input asp-for="ModelText" class="form-control" />
+                <span asp-validation-for="ModelText" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ModelDescription" class="control-label"></label>
+                <input asp-for="ModelDescription" class="form-control" />
+                <span asp-validation-for="ModelDescription" class="text-danger"></span>
+            </div>
+          
+            <div class="form-group">
+                <label asp-for="ActiveFlag" class="control-label"></label>
+                <select asp-for="ActiveFlag">
+                    <option value="Y">Yes</option>
+                    <option value="N">No</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

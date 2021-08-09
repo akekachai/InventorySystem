@@ -1,0 +1,88 @@
+﻿@model IEnumerable<YcgItInventorySystem_V2.Models.Inventory.SP_ReqFormItList>
+@{
+    ViewData["Title"] = "Confrim_List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>ผู้ยื่นยืนยันการร้องขอ</h4>
+
+<div class="alert alert-success alert-dismissible" id="NewMsg" style="display: none;">
+
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                เลขที่รายการ
+            </th>
+            <th>
+                ชื่อผู้ใช้บริการ
+            </th>
+            <th>
+                ฝ่าย/แผนก
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReqNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UsersName_TH)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DepartmentText)
+                </td>
+                <td>
+                    @{ if (item.ReqStatus == "1-1")
+                        {
+                                        <a asp-action="Edit" asp-route-id="@item.ReqNo" asp-route-pageid="1">ดูรายละเอียดเพื่อยืนยันการขอใช้บริการ</a>
+                        }
+                    }
+     
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script src="~/plugins/jquery/jquery.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+ 
+        var ReqNo = "";
+        try
+        {
+
+            ReqNo =  "@Context.Request.Query["ReqNo"]"
+
+        }
+        catch { }
+ 
+
+        console.log(ReqNo);
+        if (ReqNo == "") {
+            $('#NewMsg').hide();
+        }
+        else {
+
+            var x = document.getElementById("NewMsg");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+
+            $('#NewMsg').html('<a href=# class=close data-dismiss=alert aria-label=close>&times;</a> ยืนยันการร้องขอใช้บริการสำเร็จรายการเลขที่ : ' + ReqNo );
+        }
+
+
+    });
+</script> 

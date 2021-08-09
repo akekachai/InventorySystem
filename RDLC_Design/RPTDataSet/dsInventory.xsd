@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsInventory" targetNamespace="http://tempuri.org/dsInventory.xsd" xmlns:mstns="http://tempuri.org/dsInventory.xsd" xmlns="http://tempuri.org/dsInventory.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsInventory" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="dsInventory" msprop:Generator_UserDSName="dsInventory">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="ReqFormIT_ID" msprop:Generator_TableClassName="ReqFormIT_IDDataTable" msprop:Generator_TableVarName="tableReqFormIT_ID" msprop:Generator_TablePropName="ReqFormIT_ID" msprop:Generator_RowDeletingName="ReqFormIT_IDRowDeleting" msprop:Generator_RowChangingName="ReqFormIT_IDRowChanging" msprop:Generator_RowEvHandlerName="ReqFormIT_IDRowChangeEventHandler" msprop:Generator_RowDeletedName="ReqFormIT_IDRowDeleted" msprop:Generator_UserTableName="ReqFormIT_ID" msprop:Generator_RowChangedName="ReqFormIT_IDRowChanged" msprop:Generator_RowEvArgName="ReqFormIT_IDRowChangeEvent" msprop:Generator_RowClassName="ReqFormIT_IDRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ReqNo" msprop:Generator_ColumnVarNameInTable="columnReqNo" msprop:Generator_ColumnPropNameInRow="ReqNo" msprop:Generator_ColumnPropNameInTable="ReqNoColumn" msprop:Generator_UserColumnName="ReqNo" type="xs:string" minOccurs="0" />
+              <xs:element name="UserName_TH" msprop:Generator_ColumnVarNameInTable="columnUserName_TH" msprop:Generator_ColumnPropNameInRow="UserName_TH" msprop:Generator_ColumnPropNameInTable="UserName_THColumn" msprop:Generator_UserColumnName="UserName_TH" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="RptInvMstAssetItemSerialUsedSelect" msprop:Generator_TableClassName="RptInvMstAssetItemSerialUsedSelectDataTable" msprop:Generator_TableVarName="tableRptInvMstAssetItemSerialUsedSelect" msprop:Generator_RowChangedName="RptInvMstAssetItemSerialUsedSelectRowChanged" msprop:Generator_TablePropName="RptInvMstAssetItemSerialUsedSelect" msprop:Generator_RowDeletingName="RptInvMstAssetItemSerialUsedSelectRowDeleting" msprop:Generator_RowChangingName="RptInvMstAssetItemSerialUsedSelectRowChanging" msprop:Generator_RowEvHandlerName="RptInvMstAssetItemSerialUsedSelectRowChangeEventHandler" msprop:Generator_RowDeletedName="RptInvMstAssetItemSerialUsedSelectRowDeleted" msprop:Generator_RowClassName="RptInvMstAssetItemSerialUsedSelectRow" msprop:Generator_UserTableName="RptInvMstAssetItemSerialUsedSelect" msprop:Generator_RowEvArgName="RptInvMstAssetItemSerialUsedSelectRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TypeText" msprop:Generator_ColumnVarNameInTable="columnTypeText" msprop:Generator_ColumnPropNameInRow="TypeText" msprop:Generator_ColumnPropNameInTable="TypeTextColumn" msprop:Generator_UserColumnName="TypeText" type="xs:string" minOccurs="0" />
+              <xs:element name="CatagoryText" msprop:Generator_ColumnVarNameInTable="columnCatagoryText" msprop:Generator_ColumnPropNameInRow="CatagoryText" msprop:Generator_ColumnPropNameInTable="CatagoryTextColumn" msprop:Generator_UserColumnName="CatagoryText" type="xs:string" minOccurs="0" />
+              <xs:element name="ItemId" msprop:Generator_ColumnVarNameInTable="columnItemId" msprop:Generator_ColumnPropNameInRow="ItemId" msprop:Generator_ColumnPropNameInTable="ItemIdColumn" msprop:Generator_UserColumnName="ItemId" type="xs:string" minOccurs="0" />
+              <xs:element name="ItemText" msprop:Generator_ColumnVarNameInTable="columnItemText" msprop:Generator_ColumnPropNameInRow="ItemText" msprop:Generator_ColumnPropNameInTable="ItemTextColumn" msprop:Generator_UserColumnName="ItemText" type="xs:string" minOccurs="0" />
+              <xs:element name="ItemSerialNo" msprop:Generator_ColumnVarNameInTable="columnItemSerialNo" msprop:Generator_ColumnPropNameInRow="ItemSerialNo" msprop:Generator_ColumnPropNameInTable="ItemSerialNoColumn" msprop:Generator_UserColumnName="ItemSerialNo" type="xs:string" minOccurs="0" />
+              <xs:element name="EmployeeId" msprop:Generator_ColumnVarNameInTable="columnEmployeeId" msprop:Generator_ColumnPropNameInRow="EmployeeId" msprop:Generator_ColumnPropNameInTable="EmployeeIdColumn" msprop:Generator_UserColumnName="EmployeeId" type="xs:string" minOccurs="0" />
+              <xs:element name="EmployeeName" msprop:Generator_ColumnVarNameInTable="columnEmployeeName" msprop:Generator_ColumnPropNameInRow="EmployeeName" msprop:Generator_ColumnPropNameInTable="EmployeeNameColumn" msprop:Generator_UserColumnName="EmployeeName" type="xs:string" minOccurs="0" />
+              <xs:element name="ItemAssetNo" msprop:Generator_ColumnVarNameInTable="columnItemAssetNo" msprop:Generator_ColumnPropNameInRow="ItemAssetNo" msprop:Generator_ColumnPropNameInTable="ItemAssetNoColumn" msprop:Generator_UserColumnName="ItemAssetNo" type="xs:string" minOccurs="0" />
+              <xs:element name="ItemSerialNoUsedFlag" msprop:Generator_ColumnVarNameInTable="columnItemSerialNoUsedFlag" msprop:Generator_ColumnPropNameInRow="ItemSerialNoUsedFlag" msprop:Generator_ColumnPropNameInTable="ItemSerialNoUsedFlagColumn" msprop:Generator_UserColumnName="ItemSerialNoUsedFlag" type="xs:string" minOccurs="0" />
+              <xs:element name="EmployeeIdUsedFlag" msprop:Generator_ColumnVarNameInTable="columnEmployeeIdUsedFlag" msprop:Generator_ColumnPropNameInRow="EmployeeIdUsedFlag" msprop:Generator_ColumnPropNameInTable="EmployeeIdUsedFlagColumn" msprop:Generator_UserColumnName="EmployeeIdUsedFlag" type="xs:string" minOccurs="0" />
+              <xs:element name="EmployeeIdNotUsedFlag" msprop:Generator_ColumnVarNameInTable="columnEmployeeIdNotUsedFlag" msprop:Generator_ColumnPropNameInRow="EmployeeIdNotUsedFlag" msprop:Generator_ColumnPropNameInTable="EmployeeIdNotUsedFlagColumn" msprop:Generator_UserColumnName="EmployeeIdNotUsedFlag" type="xs:string" minOccurs="0" />
+              <xs:element name="EmployeeIdUsedResignFlag" msprop:Generator_ColumnVarNameInTable="columnEmployeeIdUsedResignFlag" msprop:Generator_ColumnPropNameInRow="EmployeeIdUsedResignFlag" msprop:Generator_ColumnPropNameInTable="EmployeeIdUsedResignFlagColumn" msprop:Generator_UserColumnName="EmployeeIdUsedResignFlag" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="RptInvMstEmployeeAssetItemUsed" msprop:Generator_TableClassName="RptInvMstEmployeeAssetItemUsedDataTable" msprop:Generator_TableVarName="tableRptInvMstEmployeeAssetItemUsed" msprop:Generator_RowChangedName="RptInvMstEmployeeAssetItemUsedRowChanged" msprop:Generator_TablePropName="RptInvMstEmployeeAssetItemUsed" msprop:Generator_RowDeletingName="RptInvMstEmployeeAssetItemUsedRowDeleting" msprop:Generator_RowChangingName="RptInvMstEmployeeAssetItemUsedRowChanging" msprop:Generator_RowEvHandlerName="RptInvMstEmployeeAssetItemUsedRowChangeEventHandler" msprop:Generator_RowDeletedName="RptInvMstEmployeeAssetItemUsedRowDeleted" msprop:Generator_RowClassName="RptInvMstEmployeeAssetItemUsedRow" msprop:Generator_UserTableName="RptInvMstEmployeeAssetItemUsed" msprop:Generator_RowEvArgName="RptInvMstEmployeeAssetItemUsedRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="EmployeeId" msprop:Generator_ColumnVarNameInTable="columnEmployeeId" msprop:Generator_ColumnPropNameInRow="EmployeeId" msprop:Generator_ColumnPropNameInTable="EmployeeIdColumn" msprop:Generator_UserColumnName="EmployeeId" type="xs:string" minOccurs="0" />
+              <xs:element name="EmployeeName" msprop:Generator_ColumnVarNameInTable="columnEmployeeName" msprop:Generator_ColumnPropNameInRow="EmployeeName" msprop:Generator_ColumnPropNameInTable="EmployeeNameColumn" msprop:Generator_UserColumnName="EmployeeName" type="xs:string" minOccurs="0" />
+              <xs:element name="ItemText" msprop:Generator_ColumnVarNameInTable="columnItemText" msprop:Generator_ColumnPropNameInRow="ItemText" msprop:Generator_ColumnPropNameInTable="ItemTextColumn" msprop:Generator_UserColumnName="ItemText" type="xs:string" minOccurs="0" />
+              <xs:element name="ItemSerialNo" msprop:Generator_ColumnVarNameInTable="columnItemSerialNo" msprop:Generator_ColumnPropNameInRow="ItemSerialNo" msprop:Generator_ColumnPropNameInTable="ItemSerialNoColumn" msprop:Generator_UserColumnName="ItemSerialNo" type="xs:string" minOccurs="0" />
+              <xs:element name="ItemAssetNo" msprop:Generator_ColumnVarNameInTable="columnItemAssetNo" msprop:Generator_ColumnPropNameInRow="ItemAssetNo" msprop:Generator_ColumnPropNameInTable="ItemAssetNoColumn" msprop:Generator_UserColumnName="ItemAssetNo" type="xs:string" minOccurs="0" />
+              <xs:element name="ItemContractNo" msprop:Generator_ColumnVarNameInTable="columnItemContractNo" msprop:Generator_ColumnPropNameInRow="ItemContractNo" msprop:Generator_ColumnPropNameInTable="ItemContractNoColumn" msprop:Generator_UserColumnName="ItemContractNo" type="xs:string" minOccurs="0" />
+              <xs:element name="ItemId" msprop:Generator_ColumnVarNameInTable="columnItemId" msprop:Generator_ColumnPropNameInRow="ItemId" msprop:Generator_ColumnPropNameInTable="ItemIdColumn" msprop:Generator_UserColumnName="ItemId" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

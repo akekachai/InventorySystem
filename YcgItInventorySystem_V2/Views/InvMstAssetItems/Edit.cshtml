@@ -1,0 +1,417 @@
+﻿@model YcgItInventorySystem_V2.Models.Inventory.InvMstAssetItem
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="~/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+<!-- Toastr -->
+<link rel="stylesheet" href="~/plugins/toastr/toastr.min.css">
+<!-- Ionicons -->
+<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+
+<!-- Theme style -->
+<link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+
+<h3>จัดการข้อมูลทรัพย์สิน</h3>
+
+
+<hr />
+<form asp-action="Edit">
+    <div class="card card-primary card-outline">
+        <div class="card-body">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <input asp-for="ItemId" type="hidden" id="ItemId" class="form-control">
+
+                <div class="col-md-3">
+                    <label asp-for="ItemText" class="control-label"></label>
+                    <input asp-for="ItemText" class="form-control">
+                    <span asp-validation-for="ItemText" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="ItemDescription" class="control-label"></label>
+                    <input asp-for="ItemDescription" class="form-control">
+                    <span asp-validation-for="ItemDescription" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <label asp-for="TypeId" class="control-label"></label>
+                    <select asp-for="TypeId" class="form-control" asp-items="@(new SelectList(ViewBag.ListinvMstAssetType,"TypeId","TypeText"))"></select>
+                    <span asp-validation-for="TypeId" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="CatagoryId" class="control-label"></label>
+                    <select asp-for="CatagoryId" class="form-control" asp-items="@(new SelectList(ViewBag.ListinvMstAssetCatagory,"CatagoryId","CatagoryText"))"></select>
+                    <span asp-validation-for="CatagoryId" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="BrandId" class="control-label"></label>
+                    <select asp-for="BrandId" class="form-control" asp-items="@(new SelectList(ViewBag.ListinvMstAssetBrand ,"BrandId","BrandText"))"></select>
+                    <span asp-validation-for="BrandId" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="ModelId" class="control-label"></label>
+                    <select asp-for="ModelId" class="form-control" asp-items="@(new SelectList(ViewBag.ListinvMstAssetModel,"ModelId","ModelText"))"></select>
+                    <span asp-validation-for="ModelId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-3">
+                    <label asp-for="ItemExpireDateFlag" class="control-label"></label>
+                    <select asp-for="ItemExpireDateFlag" class="form-control">
+                        <option value="Y">Yes</option>
+                        <option value="N" selected>No</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="ItemContractFlag" class="control-label"></label>
+                    <select asp-for="ItemContractFlag" class="form-control">
+                        <option value="Y">Yes</option>
+                        <option value="N" selected>No</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="ItemUnlimitFlag" class="control-label"></label>
+                    <select asp-for="ItemUnlimitFlag" class="form-control">
+                        <option value="Y">Yes</option>
+                        <option value="N" selected>No</option>
+                    </select>
+
+                </div>
+
+                <div class="col-md-3">
+                    <label asp-for="ActiveFlag" class="control-label"></label>
+                    <select asp-for="ActiveFlag" class="form-control">
+                        <option value="Y" selected>Yes</option>
+                        <option value="N">No</option>
+                    </select>
+                </div>
+
+
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <input type="submit" value="Save" class="btn btn-primary" /> <a class="btn btn-info" asp-action="Index">Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<div class="card card-primary card-outline">
+    <div class="card-body">
+        <div class="row">
+            <div class="form-group-sm">
+                <select class="form-control-sm" id="comp_s" asp-items="@(new SelectList(ViewBag.ListempMstCompanies,"CompanyId","CompanyText"))"></select>
+            </div>
+            <div class="form-group-sm">
+                <select class="form-control-sm" id="location_s" asp-items="@(new SelectList(ViewBag.ListempMstLocation,"LocationId","LocationText"))"></select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group-sm" style="width : 180px;">
+                <label class="control-label">SerialNo</label>
+                <input id="SerialNo" class="form-control input-sm" type="text">
+            </div>
+            <div class="form-group-sm" style="width : 180px;">
+                <label class="control-label">AssetNo</label>
+                <input id="AssetNo" class="form-control input-sm" type="text">
+            </div>
+            <div class="form-group-sm" style="width : 100px;">
+                <label class="control-label">ContractNo</label>
+                <input id="ContractNo" class="form-control input-sm" type="text">
+            </div>
+            <div class="col" style="width : 100px;">
+                <label class="control-label">ContractStartDate</label>
+                <input id="ContractStartDate" class="form-control input-sm" type="text">
+            </div>
+            <div class="col" style="width : 100px;">
+                <label class="control-label">ContractExpireDate</label>
+                <input id="ContractExpireDate" class="form-control input-sm" type="text">
+            </div>
+            <div class="col" style="width : 100px;">
+                <label class="control-label">SerialCost</label>
+                <input id="SerialCost" class="form-control input-sm" type="number" value="0">
+            </div>
+
+            <div class="col" style="width : 100px;">
+                <label class="control-label">AvailableQty</label>
+                <input id="AvailableQty" class="form-control input-sm" type="number" value="1">
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="text-center">
+                    <button class="btn btn-success btn-xs" id="btnsaveSerial">save</button>
+                    <button class="btn btn-info btn-xs" id="btnclear">clear</button>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <table id="myTable" class="table">
+                    <thead>
+                        <tr>
+                            <th>SerialNo</th>
+                            <th>AssetNo</th>
+                            <th>ContractNo</th>
+                            <th style="width : 80px;">ContractStartDate</th>
+                            <th style="width : 80px;">ContractExpireDate</th>
+                            <th>SerialCost</th>
+                            <th>AvailableQty</th>
+                            <th>#</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
+}
+<!-- jQuery -->
+<script src="~/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Select2 -->
+<script src="~/plugins/select2/js/select2.full.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="~/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="~/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="~/plugins/jszip/jszip.min.js"></script>
+<script src="~/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="~/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="~/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="~/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="~/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- SweetAlert2 -->
+<script src="../../plugins/sweetalert2/sweetalert2.min.js"></script>
+<!-- Toastr -->
+<script src="../../plugins/toastr/toastr.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#ContractStartDate').datepicker({
+            format: 'dd/mm/yyyy',
+        });
+        $('#ContractExpireDate').datepicker({
+            format: 'dd/mm/yyyy',
+        });
+
+       searchSerial();
+
+
+    });
+
+    $("#btnsaveSerial").on('click', function ()
+    {
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
+
+        if ($("#SerialNo").val() == '') {
+            Toast.fire({
+                icon: 'error',
+                title: 'โปรดกรอก serial NO.'
+            });
+            return false;
+        }
+        if ($("#AssetNo").val() == '') {
+            Toast.fire({
+                icon: 'error',
+                title: 'โปรดกรอก Asset NO.'
+            });
+            return   false;
+        }
+
+        if ($("#SerialCost").val() == '') {
+            Toast.fire({
+                icon: 'error',
+                title: 'โปรดกรอก serial Cost'
+            });
+            return   false;
+        }
+        if ($("#AvailableQty").val() == '') {
+            Toast.fire({
+                icon: 'error',
+                title: 'โปรดกรอก Available Qty'
+            });
+            return  false;
+        }
+        console.log($("#ItemId").val());
+         $.ajax({
+            url: '@Url.Action("Add_Serial", "InvMstAssetItems")',
+            type: "Post",
+            data: { Company: $("#comp_s").val(), Location: $("#location_s").val(), ItemId: $("#ItemId").val(), SerialNo: $("#SerialNo").val(), AssetNo: $("#AssetNo").val(), ContractNo: $("#ContractNo").val(), ContractStartDate: $("#ContractStartDate").val(), ContractExpireDate: $("#ContractExpireDate").val(), SerialCost: $("#SerialCost").val(), AvailableQty: $("#AvailableQty").val() },
+             success: function (response) {
+
+                 if (response == "success")
+                 {
+                     Toast.fire({
+                         icon: 'success',
+                         title: 'บันทึกรายการของ SerialNo : ' + $("#SerialNo").val() + ' สำเร็จ'
+                     });
+                     searchSerial();
+                 }
+
+            }
+         });
+
+    });
+
+    $("#btnclear").on('click', function () {
+
+        $("#SerialNo").val('');
+        $("#AssetNo").val('');
+        $("#ContractNo").val('');
+        $("#ContractStartDate").val('');
+        $("#ContractExpireDate").val('');
+        $("#SerialCost").val('');
+        $("#AvailableQty").val('');
+    });
+
+     function searchSerial() {
+
+
+
+
+        $(function () {
+        $.ajax({
+            type: "Get",
+            url: '@Url.Action("Get_Serial", "InvMstAssetItems")',
+            data: { ItemId: $("#ItemId").val() },
+            dataType: "json",
+            success: OnSuccess,
+            failure: function (response) {
+
+            },
+            error: function (response) {
+
+            }
+        });
+    });
+
+    }
+
+    function OnSuccess(response)
+    {
+        var Info = eval(response);
+        console.log(Info);
+        if ($.fn.dataTable.isDataTable('#myTable')) {
+            table = $('#myTable').DataTable();
+            table.clear().draw();
+            table.rows.add(Info);
+            table.columns.adjust().draw();
+        }
+        else
+        {
+            $("#myTable").DataTable(
+                {
+                    "responsive": true,
+                   data: Info,
+                    columns:
+                        [{
+                            "data": "serialno",
+                            "render": function (data) {
+                                var result = data
+                                return result
+                            }
+                        },
+
+                        {
+                            "data": "assetno",
+                            "render": function (data) {
+                                var result = data
+                                return result
+                            }
+                        },
+                        {
+                            "data": "contractno",
+                            "render": function (data) {
+                                var result = data
+                                return result
+                            }
+                        },
+                        {
+                            "data": "ctstart",
+                            "render": function (data) {
+                                var result = data
+                                return result
+                            }
+                        },
+                        {
+                            "data": "ctend",
+                            "render": function (data) {
+                                var result = data
+                                return result
+                            }
+                        },
+                        {
+                            "data": "cost",
+                            "render": function (data) {
+                                var result = data
+                                return result
+                            }
+                        },
+                        {
+                            "data": "qty",
+                            "render": function (data) {
+                                var result = data
+                                return result
+                            }
+                        },
+                        {
+                            "data": "serialno",
+                            "render": function (data, type, full) {
+                                //var result = "<a href='#' class='text-info mr-1'><i class='fas fa-edit' onclick='editserialno('" + data + "','" + full.assetno + "','" + full.contractno + "','" + full.ctstart + "','" + full.ctend + "','" + full.cost + "','" + full.qty + "'); )'></i></a>"
+                                var result = "<a href='#' class='text-info mr-1'><i class='fas fa-edit' onclick=editserialno('" + data + "','" + full.assetno + "','" + full.contractno + "','" + full.ctstart + "','" + full.ctend + "','" + full.cost + "','" + full.qty + "') ></i></a>"
+                                return result
+                            }
+                        }
+                        ]
+                });
+
+        }
+    }
+    function editserialno(SerialNo, AssetNo, ContractNo, ctstart, ctend, cost)
+   /* function editserialno(SerialNo, AssetNo, ContractNo,ctstart,ctend,cost,qty)*/
+    {
+        $("#SerialNo").val(SerialNo);
+        $("#AssetNo").val(AssetNo);
+        $("#ContractNo").val(ContractNo);
+        $("#ContractStartDate").val(ctstart);
+        $("#ContractExpireDate").val(ctend);
+        $("#SerialCost").val(cost);
+        //$("#AvailableQty").val(qty);
+    }
+</script>

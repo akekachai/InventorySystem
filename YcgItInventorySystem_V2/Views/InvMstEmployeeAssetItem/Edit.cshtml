@@ -1,0 +1,305 @@
+﻿@model YcgItInventorySystem_V2.Models.Inventory.InvMstEmployeeAssetItem
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var i = 0;
+    var item3 = ViewBag.ListEmpHandleAsset_Detail;
+
+
+}
+<!-- Select2 -->
+<link rel="stylesheet" href="~/plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="~/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="../../plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+<!-- Toastr -->
+<link rel="stylesheet" href="../../plugins/toastr/toastr.min.css">
+
+<link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+<!-- DataTables -->
+<link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="~/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row ">
+            <div class="col-sm-6">
+                <h1>
+                    <span id="cphContent_lblTitle">เพิ่มเติมและแก้ไขผู้ใช้ทรัพย์สิน</span>
+                </h1>
+            </div>
+            <div class="col-sm-6">
+                <div class="float-right">
+                    @* <a class="btn btn-success btn-xs" onclick="saveasset();">Save</a>*@
+                    <a class="btn btn-danger btn-xs" asp-action="Index">Back to List</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-3">
+        รหัสพนักงาน : @item3[0].EmployeeId <br/> ชื่อ : @item3[0].EmpName <input type="hidden" id="empid" value=@item3[0].EmployeeId>
+    </div>
+    <div class="col-md-9">
+        <div class="form-group">
+            <label class="control-label"> comment </label> <button class="btn btn-success btn-xs" onclick="savecomment();">save</button>
+                                                           <textarea id="Empcomment" class="form-control" rows="2"> @ViewBag.comment </textarea>
+        </div>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="card-body">
+        <table id="myTable" class="table">
+            <thead>
+                <tr>
+                    <th>ItemText</th>
+                    <th>ItemSerial No.</th>
+                    <th>ItemAssets No.   </th>
+                    <th>วันที่บันทึก</th>
+                    <th>วันที่ได้รับ</th>
+                    <th>UsedFlag</th>
+                    <th></th>
+                </tr>
+
+            </thead>
+            <tbody>
+
+                @foreach (var item2 in ViewBag.ListEmpHandleAsset_Detail)
+                {
+                    i = i + 1;
+                    var traid = "tra" + i;
+                    var tra_id = "tra" + i;
+                    var itemtxt = "itemtxt" + i;
+                    var itemId = "itemId" + i;
+                    var itemserial = "serial" + i;
+                    var itemasset = "itemasset" + i;
+                    var tra_btn = "tr_btn" + i;
+                    var idsave = "save" + i;
+                    var idreceipt = "receipt" + i;
+                    var idactive = "active" + i;
+                    var background = "";
+
+                    if (@item2.EmployeeId != "")
+                    {
+                        background = "bg-info";
+
+                    }
+                    else
+                    {
+                        background = "";
+
+                    }
+
+                    <tr class=@background>
+                        <td style="width : 150px;">@item2.ItemText <input type="hidden" id=@itemId value=@item2.ItemId></td>
+                        <td>@item2.ItemSerialNo</td>
+                        <td>@item2.ItemAssetNo</td>
+                        <td style="width : 100px;"><input id=@idsave class="btn btn-success btn-xs" placeholder="วันที่บันทึก" value=@item2.ItemActualDate style="width : 100px;"></td>
+                        <td style="width : 100px;"><input id=@idreceipt class="btn btn-danger btn-xs" placeholder="วันที่รับ" value=@item2.ItemReceiveDate style="width : 100px;"></td>
+                        <td>
+                            @{ if (@item2.ActiveFlag == "Y")
+                                {
+                                    <input id=@idactive type="checkbox" checked />
+                                }
+                                else
+                                {
+                                    <input id=@idactive type="checkbox" />
+                                }
+                            }
+                        </td>
+                        <td>
+                            <input type="hidden" id=@traid value=@item2.TransactionId> <input type="hidden" id=@tra_btn value=""><input type="hidden" id=@itemtxt value=@item2.ItemText><input type="hidden" id=@itemserial value=@item2.ItemSerialNo><input type="hidden" id=@itemasset value=@item2.ItemAssetNo>
+                            
+                            <button class='text-yellow mr-1'><i class='fas fa-save'></i></button>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
+}
+<!-- jQuery -->
+<script src="~/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="~/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="~/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="~/plugins/jszip/jszip.min.js"></script>
+<script src="~/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="~/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="~/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="~/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="~/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- SweetAlert2 -->
+<script src="../../plugins/sweetalert2/sweetalert2.min.js"></script>
+<!-- Toastr -->
+<script src="../../plugins/toastr/toastr.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        oTable = document.getElementById("myTable");
+        for (i = 1; i < oTable.rows.length; i++) {
+            var assetsavedate = "#save" + i;
+            var assetreciptdate = "#receipt" + i;
+            $(assetsavedate).datepicker({
+                format: 'dd/mm/yyyy',
+            });
+            $(assetreciptdate).datepicker({
+                format: 'dd/mm/yyyy',
+            });
+        }
+
+        $("#myTable").DataTable(
+            { "responsive": true, "lengthChange": false, seraching: true, paging: true, bInfo: false, "order": [4, 'desc'] });
+
+           var Id = "";
+        try
+        {
+
+            Id = "@Context.Request.Query["Id"]"
+            console.log(Id);
+        }
+        catch { }
+    });
+
+
+    $('#myTable tbody').on('click', 'tr .fa-save', function ()
+    {
+
+
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
+
+        var table = $('#myTable').DataTable();
+        //var dr = table.row(this).data();
+
+
+        var idx = $(this).closest('tr').index();
+        idx += 1;
+        var traid = "tra" + idx;
+        var saveDate = "save" + idx;
+        var receipt = "receipt" + idx;
+        var idactive = "active" + idx;
+        var itemtxt = "itemtxt" + idx;
+        var itemId = "itemId" + idx;
+        var itemserial = "serial" + idx;
+        var itemasset = "itemasset" + idx;
+
+        var p_tra = document.getElementById(traid).value;
+        var p_savedate = document.getElementById(saveDate).value;
+        var p_receipt = document.getElementById(receipt).value
+        var p_idactive = document.getElementById(idactive).checked
+        var p_serial = document.getElementById(itemserial).value;
+        var p_itemtext = document.getElementById(itemtxt).value;
+        var p_itemasset = document.getElementById(itemasset).value;
+        var p_itemid = document.getElementById(itemId).value;
+        console.log(p_savedate);
+
+        if (p_savedate == "")
+        {
+            Toast.fire({
+                icon: 'error',
+                title: ' โปรดใส่วันที่ บันทึก '
+            })
+            return false;
+        }
+
+        if (p_receipt == "") {
+            Toast.fire({
+                icon: 'error',
+                title: ' โปรดใส่วันที่ รับของ '
+            })
+            return false;
+        }
+
+        if (p_idactive == "") {
+            Toast.fire({
+                icon: 'error',
+                title: ' โปรดติก Active '
+            })
+            return false;
+        }
+
+        if (p_savedate !== "" && p_receipt !== "" && p_idactive === true)
+        {
+            console.log('pass');
+            $.ajax({
+                type: 'Post',
+                url: '@Url.Action("Edit", "InvMstEmployeeAssetItem")',
+                data: { TransactionId: p_tra, employee: $('#empid').val(), itemid: p_itemid, itemserial: p_serial, saveDate: p_savedate, receiptDate: p_receipt, activeflag: p_idactive },
+                success: function (Data) {
+                    if (Data == "success") {
+                        Toast.fire({
+                            icon: 'success',
+                            title: ' บันทึกรายการ ' + p_itemtext + ' สำเร็จ '
+                        });
+                    } else
+                    {
+                        Toast.fire({
+                            icon: 'error',
+                            title: ' พบข้อผิดพลาด ' + p_itemtext + '  '
+                        });
+                    }
+                    
+
+                }
+            });
+        }
+
+
+    });
+
+    function savecomment()
+    {
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
+
+
+        $.ajax({
+            type: 'Post',
+            url: '@Url.Action("savecomment", "InvMstEmployeeAssetItem")',
+            data: { empId: $('#empid').val(), Comment: $('#Empcomment').val() },
+            success: function (Data) {
+                if (Data == "success") {
+                    Toast.fire({
+                        icon: 'success',
+                        title: ' บันทึก comment สำเร็จ '
+                    });
+                } else {
+                    Toast.fire({
+                        icon: 'error',
+                        title: ' พบข้อผิดพลาด ' + p_itemtext + '  '
+                    });
+                }
+            }
+       });
+    }
+</script>
